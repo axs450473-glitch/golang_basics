@@ -1,0 +1,3 @@
+module initExample
+
+go 1.24.10

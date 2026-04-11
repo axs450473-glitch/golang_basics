@@ -1,0 +1,14 @@
+-- Install Python
+
+https://www.python.org/downloads/release/python-3144/ -- use installer not python pkg manager
+
+-- See if Google ADK package is already installed 
+  
+pip show google-adk
+
+-- Install Google Adk 
+
+pip install google-adk
+
+-- Run ADk agent 
+adk web

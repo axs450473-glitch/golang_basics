@@ -34,10 +34,18 @@ func eprocess() error {
 	return &myError{"Custom Error"}
 }
 
-// fmt.Errof()
+/*
+When you call errors.New("something failed"), it:
 
+Creates a simple struct that holds your string.
+
+Returns the address of that struct.
+
+Since that struct has an Error() method, it satisfies the error interface.
+*/
 func readConfig() error {
 	return errors.New("Config Error")
+	//return &myError{message: "This is my test error -> 04-01-2026"}
 }
 func readData() error {
 	err := readConfig()

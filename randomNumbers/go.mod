@@ -1,0 +1,3 @@
+module randomNumbersExamples
+
+go 1.24.10

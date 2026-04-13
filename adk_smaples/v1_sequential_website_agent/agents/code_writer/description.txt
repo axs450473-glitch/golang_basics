@@ -1,0 +1,1 @@
+The Code Writer Agent is the execution engine of your pipeline. It ingests the functional requirements and structural design blueprints to synthesize a fully functional, single-file web application (HTML/CSS/JS). It is strictly configured to avoid placeholders and uses a dedicated file-writing tool to save the complete, runnable code directly to your system.

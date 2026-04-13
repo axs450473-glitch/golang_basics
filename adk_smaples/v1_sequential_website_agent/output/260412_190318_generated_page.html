@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Language: Dive into AI Agents!</title>
+    <meta name="description" content="AI Language demystifies complex AI agent concepts with fun, interactive learning about Model Context Protocol, Agent-to-Agent communication, and Agent Development.">
+    <link rel="canonical" href="https://www.ailanguage.com/">
+    <style>
+        /* Global Design System - Colors */
+        :root {
+            --color-primary: #00D0FF;
+            --color-secondary: #FF5C8A;
+            --bg-primary: #0A0E19;
+            --bg-secondary: #181E2F;
+            --text-primary: #E0E6F0;
+            --text-secondary: #A8B2C7;
+            --color-success: #4CAF50;
+            --color-error: #F44336;
+
+            /* Spacing Scale */
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --spacing-xxl: 48px;
+            --spacing-xxxl: 64px;
+            --spacing-xxxxl: 96px;
+
+            /* Border-Radius */
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-full: 50%;
+
+            /* Box Shadow */
+            --box-shadow: 0 4px 20px rgba(0, 208, 255, 0.2);
+
+            /* Breakpoints */
+            --breakpoint-mobile: 767px;
+            --breakpoint-tablet: 768px;
+            --breakpoint-desktop: 1024px;
+        }
+
+        /* Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden; /* Prevent horizontal scroll from animations */
+        }
+
+        main {
+            flex-grow: 1;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            color: var(--text-primary);
+        }
+
+        p {
+            font-size: 1.125rem; /* 18px */
+            margin-bottom: var(--spacing-md);
+        }
+
+        a {
+            color: var(--color-primary);
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: var(--color-primary);
+            text-shadow: 0 0 8px rgba(0, 208, 255, 0.6);
+            transform: translateY(-1px);
+            transition: all 0.2s ease-out;
+        }
+
+        button {
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease-out;
+        }
+
+        button:focus,
+        a:focus,
+        input:focus {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 3px;
+        }
+
+        /* Utility Classes */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-xl);
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            background-color: var(--bg-primary);
+            padding: var(--spacing-md) var(--spacing-xl);
+            border-bottom: 1px solid rgba(0, 208, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .logo span:first-child {
+            color: var(--color-primary);
+        }
+
+        .nav-links {
+            display: none; /* Hidden by default on mobile */
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: var(--spacing-xl);
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            font-weight: 500;
+            font-size: 1rem;
+            transition: all 0.2s ease-out;
+        }
+
+        .nav-links a:hover {
+            color: var(--color-primary);
+            text-shadow: 0 0 8px rgba(0, 208, 255, 0.6);
+        }
+
+        .hamburger {
+            display: block; /* Visible by default on mobile */
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            cursor: pointer;
+            padding: var(--spacing-sm);
+        }
+
+        .hamburger svg {
+            fill: currentColor;
+            width: 24px;
+            height: 24px;
+            vertical-align: middle;
+        }
+
+        /* Mobile Nav Overlay */
+        .mobile-nav-overlay {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-primary);
+            z-index: 99;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transform: translateX(100%);
+            transition: transform 0.3s ease-out;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .mobile-nav-overlay.open {
+            transform: translateX(0);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-nav-overlay .close-btn {
+            position: absolute;
+            top: var(--spacing-md);
+            right: var(--spacing-xl);
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        .mobile-nav-overlay ul {
+            list-style: none;
+            text-align: center;
+            padding: 0;
+        }
+
+        .mobile-nav-overlay li {
+            margin: var(--spacing-lg) 0;
+        }
+
+        .mobile-nav-overlay a {
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: block;
+            padding: var(--spacing-sm);
+            transition: color 0.2s ease-out, text-shadow 0.2s ease-out;
+        }
+
+        .mobile-nav-overlay a:hover {
+            color: var(--color-primary);
+            text-shadow: 0 0 10px rgba(0, 208, 255, 0.6);
+        }
+
+        /* Hero Section */
+        #hero {
+            background-color: var(--bg-primary);
+            min-height: 80vh;
+            padding: var(--spacing-xxxxl) var(--spacing-xl);
+            padding-top: calc(var(--spacing-xxxxl) + 80px); /* Adjust for fixed header */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            justify-content: center;
+        }
+
+        #hero .hero-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 900px;
+            margin-bottom: var(--spacing-xxl);
+        }
+
+        #hero h1 {
+            font-size: 2.5rem; /* Mobile H1 */
+            font-weight: 800;
+            text-shadow: 0 0 12px rgba(0, 208, 255, 0.3);
+            margin-bottom: var(--spacing-md);
+        }
+
+        #hero p {
+            font-size: 1.125rem;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-lg);
+            max-width: 700px;
+        }
+
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: var(--bg-primary);
+            padding: var(--spacing-md) var(--spacing-xxl);
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 1.125rem;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(0, 208, 255, 0.4);
+            transition: all 0.2s ease-out;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            background-color: #00e0ff; /* Slightly lighter cyan */
+            box-shadow: 0 8px 25px rgba(0, 208, 255, 0.6);
+            color: var(--bg-primary); /* Ensure text color remains dark */
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: none;
+        }
+
+        .hero-visual {
+            width: 80%;
+            max-width: 600px;
+            margin-top: var(--spacing-xl);
+        }
+
+        .hero-visual img {
+            width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            box-shadow: var(--box-shadow);
+            animation: float 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-10px); }
+        }
+
+        /* Informative Sections */
+        .info-section {
+            padding: var(--spacing-xxxxl) var(--spacing-xl);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .info-section.bg-secondary {
+            background-color: var(--bg-secondary);
+        }
+
+        .info-section h2 {
+            font-size: 2rem; /* Mobile H2 */
+            font-weight: 700;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .info-section p {
+            max-width: 800px;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .info-section .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 1200px;
+            gap: var(--spacing-xxl);
+        }
+
+        .info-section .text-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .info-section .image-content {
+            flex: 1;
+        }
+
+        .info-section img {
+            width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            box-shadow: var(--box-shadow);
+            max-width: 600px;
+        }
+
+        .btn-secondary {
+            background-color: var(--color-secondary);
+            color: var(--bg-primary);
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: var(--radius-sm);
+            font-weight: 500;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.2s ease-out;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            background-color: #ff7aa8; /* Slightly lighter pink */
+            box-shadow: 0 8px 25px rgba(255, 92, 138, 0.4);
+            color: var(--bg-primary); /* Ensure text color remains dark */
+        }
+
+        .btn-secondary:active {
+            transform: translateY(0);
+            box-shadow: none;
+        }
+
+        /* Interactive Section */
+        #interactive-fun {
+            background-color: var(--bg-primary);
+            padding: var(--spacing-xxxl) var(--spacing-xl);
+            text-align: center;
+        }
+
+        #interactive-fun h2 {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        #interactive-fun p {
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .interactive-container {
+            width: 80%;
+            max-width: 800px;
+            height: 400px;
+            background-color: rgba(0, 208, 255, 0.1);
+            border: 2px dashed var(--color-primary);
+            border-radius: var(--radius-lg);
+            margin: var(--spacing-xl) auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-style: italic;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            font-size: 1.125rem;
+            padding: var(--spacing-md);
+        }
+
+        /* Newsletter Signup */
+        #newsletter {
+            background-color: var(--bg-secondary);
+            padding: var(--spacing-xxl) var(--spacing-xl);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #newsletter h3 {
+            font-size: 1.5rem; /* Mobile H3 */
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
+        }
+
+        #newsletter p {
+            max-width: 600px;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .newsletter-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .newsletter-form input[type="email"] {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--text-secondary);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            width: 100%;
+            max-width: 280px; /* Constrain input width */
+            margin-bottom: var(--spacing-md); /* For mobile stacking */
+            font-size: 1rem;
+        }
+
+        .newsletter-form input[type="email"]::placeholder {
+            color: var(--text-secondary);
+            opacity: 0.7;
+        }
+
+        .newsletter-form button {
+            background-color: var(--color-secondary);
+            color: var(--bg-primary);
+            padding: var(--spacing-md) var(--spacing-xl);
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 1.125rem;
+            white-space: nowrap;
+        }
+
+        .newsletter-form button:hover {
+            transform: translateY(-2px);
+            background-color: #ff7aa8; /* Slightly lighter pink */
+            box-shadow: 0 8px 25px rgba(255, 92, 138, 0.3);
+        }
+
+        .newsletter-message {
+            margin-top: var(--spacing-md);
+            font-size: 0.875rem;
+            min-height: 20px; /* Reserve space */
+        }
+
+        .newsletter-message.success {
+            color: var(--color-success);
+            font-weight: 600;
+        }
+
+        .newsletter-message.error {
+            color: var(--color-error);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--bg-primary);
+            padding: var(--spacing-xl) var(--spacing-xl);
+            border-top: 1px solid rgba(0, 208, 255, 0.05);
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: var(--spacing-md);
+        }
+
+        footer .footer-links a {
+            color: var(--text-secondary);
+            margin: 0 var(--spacing-sm);
+            transition: color 0.2s ease-out, text-shadow 0.2s ease-out;
+        }
+
+        footer .footer-links a:hover {
+            color: var(--color-primary);
+            text-shadow: none; /* Override parent hover text-shadow for better readability */
+            transform: none;
+        }
+
+        footer .social-icons {
+            display: flex;
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-md);
+        }
+
+        footer .social-icons a {
+            display: block; /* Ensure the whole SVG is clickable */
+            line-height: 0; /* Remove extra space below inline SVG */
+        }
+
+        footer .social-icons svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--text-secondary);
+            transition: all 0.2s ease-out;
+        }
+
+        footer .social-icons a:hover svg {
+            fill: var(--color-primary);
+            transform: scale(1.1);
+        }
+
+        /* Responsive Styles */
+        /* Tablet Breakpoint */
+        @media (min-width: 768px) {
+            #hero h1 {
+                font-size: 3rem; /* Tablet H1 */
+            }
+
+            .info-section h2 {
+                font-size: 2.25rem; /* Tablet H2 */
+            }
+
+            #newsletter h3 {
+                font-size: 1.75rem; /* Tablet H3 */
+            }
+
+            .newsletter-form {
+                flex-direction: row;
+                justify-content: center;
+                gap: var(--spacing-md);
+            }
+
+            .newsletter-form input[type="email"] {
+                margin-bottom: 0;
+            }
+
+            footer {
+                flex-direction: row;
+                justify-content: space-between;
+                gap: 0;
+            }
+
+            footer .social-icons {
+                margin-top: 0;
+            }
+        }
+
+        /* Desktop Breakpoint */
+        @media (min-width: 1024px) {
+            .hamburger, .mobile-nav-overlay {
+                display: none;
+            }
+
+            .nav-links {
+                display: flex;
+            }
+
+            #hero {
+                flex-direction: row;
+                text-align: left;
+                justify-content: space-between;
+                padding-top: calc(var(--spacing-xxxxl) + 0px); /* Reset padding-top for desktop */
+            }
+
+            #hero .hero-content {
+                align-items: flex-start;
+                margin-bottom: 0;
+                width: 50%;
+            }
+
+            #hero h1 {
+                font-size: 4.5rem; /* Desktop H1 */
+                margin-bottom: var(--spacing-lg);
+            }
+
+            #hero p {
+                font-size: 1.125rem;
+                margin-bottom: var(--spacing-xxl);
+            }
+
+            .hero-visual {
+                width: 45%;
+                margin-top: 0;
+            }
+
+            .info-section {
+                text-align: left;
+            }
+
+            .info-section h2 {
+                font-size: 3rem; /* Desktop H2 */
+            }
+
+            .info-section .content-wrapper {
+                flex-direction: row;
+                gap: var(--spacing-xxxl);
+            }
+
+            .info-section:nth-of-type(odd) .content-wrapper {
+                /* Text on left, image on right */
+                flex-direction: row;
+            }
+
+            .info-section:nth-of-type(even) .content-wrapper {
+                /* Image on left, text on right */
+                flex-direction: row-reverse;
+            }
+
+            #newsletter h3 {
+                font-size: 2.25rem; /* Desktop H3 */
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center; padding: 0;">
+            <a href="#hero" class="logo" aria-label="AI Language Home">
+                <span>AI</span>Language
+            </a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#hero">Home</a></li>
+                    <li><a href="#ai-agents">AI Agents</a></li>
+                    <li><a href="#mcp">Protocols</a></li>
+                    <li><a href="#adk">Dev Kit</a></li>
+                    <li><a href="#agent-dev">Dev</a></li>
+                    <li><a href="#">Blog</a></li> <!-- Placeholder for blog link -->
+                </ul>
+                <button class="hamburger" aria-label="Open navigation menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <div class="mobile-nav-overlay" id="mobile-nav-overlay">
+        <button class="close-btn" aria-label="Close navigation menu">&times;</button>
+        <ul>
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#ai-agents">AI Agents</a></li>
+            <li><a href="#mcp">Protocols</a></li>
+            <li><a href="#adk">Dev Kit</a></li>
+            <li><a href="#agent-dev">Dev</a></li>
+            <li><a href="#">Blog</a></li>
+        </ul>
+    </div>
+
+    <main>
+        <section id="hero" class="container">
+            <div class="hero-content">
+                <h1>Unlock the Future: Dive into AI Agents!</h1>
+                <p>AI Language demystifies complex agent concepts with fun, interactive learning.</p>
+                <a href="#ai-agents" class="btn-primary">Start Your Agent Journey!</a>
+            </div>
+            <div class="hero-visual">
+                <img src="https://source.unsplash.com/random/800x600/?ai-agent,futuristic,abstract,data&sig=1" alt="Abstract, dynamic illustration of interconnected AI agents and data flow." loading="lazy">
+            </div>
+        </section>
+
+        <section id="ai-agents" class="info-section">
+            <div class="container content-wrapper">
+                <div class="text-content">
+                    <h2>What are AI Agents?</h2>
+                    <p>Imagine tiny, smart programs that can understand, reason, and act autonomously to achieve goals. From managing your calendar to building complex software, AI Agents are the future of intelligent automation. We'll show you how!</p>
+                    <a href="#" class="btn-secondary">Learn More About Agents</a>
+                </div>
+                <div class="image-content">
+                    <img src="https://via.placeholder.com/600x400/00D0FF/0A0E19?text=AI+Agents" alt="Illustration of friendly AI agents interacting." loading="lazy">
+                </div>
+            </div>
+        </section>
+
+        <section id="mcp" class="info-section bg-secondary">
+            <div class="container content-wrapper">
+                <div class="text-content">
+                    <h2>Model Context Protocol (MCP)</h2>
+                    <p>How do agents remember what they're doing? The Model Context Protocol is their secret sauce! It allows agents to maintain a consistent understanding of their environment, goals, and conversations, ensuring they always stay on track and don't get lost in translation.</p>
+                    <a href="#" class="btn-secondary">Uncover MCP Secrets</a>
+                </div>
+                <div class="image-content">
+                    <img src="https://via.placeholder.com/600x400/FF5C8A/0A0E19?text=Model+Context+Protocol" alt="Abstract representation of an AI agent's memory and context flow." loading="lazy">
+                </div>
+            </div>
+        </section>
+
+        <section id="a2a" class="info-section">
+            <div class="container content-wrapper">
+                <div class="text-content">
+                    <h2>Agents to Agent Protocol (A2A)</h2>
+                    <p>It's not just about one agent, but many working together! The A2A protocol is all about how AI agents communicate, collaborate, and coordinate their actions. Think of it as their social network, enabling them to solve problems far bigger than any single agent could.</p>
+                    <a href="#" class="btn-secondary">Explore A2A Communication</a>
+                </div>
+                <div class="image-content">
+                    <img src="https://via.placeholder.com/600x400/4CAF50/0A0E19?text=Agent-to-Agent+Protocol" alt="Dynamic illustration of multiple AI agents communicating and collaborating." loading="lazy">
+                </div>
+            </div>
+        </section>
+
+        <section id="adk" class="info-section bg-secondary">
+            <div class="container content-wrapper">
+                <div class="text-content">
+                    <h2>Agent Development Kit (ADK)</h2>
+                    <p>Ready to build your own agents? Our Agent Development Kit provides the tools, libraries, and frameworks you need to easily design, test, and deploy powerful AI agents. No need to reinvent the wheel, just plug in and play!</p>
+                    <a href="#" class="btn-secondary">Explore the ADK</a>
+                </div>
+                <div class="image-content">
+                    <img src="https://via.placeholder.com/600x400/E0E6F0/0A0E19?text=Agent+Dev+Kit" alt="Illustration of development tools and code snippets for AI agents." loading="lazy">
+                </div>
+            </div>
+        </section>
+
+        <section id="agent-dev" class="info-section">
+            <div class="container content-wrapper">
+                <div class="text-content">
+                    <h2>Agent Development</h2>
+                    <p>From concept to deployment, we guide you through the exciting process of bringing AI agents to life. Learn about design principles, coding best practices, and strategies for creating robust, intelligent, and useful agents that make an impact.</p>
+                    <a href="#" class="btn-secondary">Start Building Agents</a>
+                </div>
+                <div class="image-content">
+                    <img src="https://via.placeholder.com/600x400/00D0FF/0A0E19?text=Agent+Development" alt="Graphic depicting the lifecycle of agent development." loading="lazy">
+                </div>
+            </div>
+        </section>
+
+        <section id="interactive-fun">
+            <div class="container">
+                <h2>Test Your Agent Smarts!</h2>
+                <p>Think you're an AI Agent expert? Take our mini-quiz or see a simple agent in action!</p>
+                <div class="interactive-container">
+                    Placeholder for Mini-Quiz or Interactive Demo
+                </div>
+            </div>
+        </section>
+
+        <section id="newsletter">
+            <div class="container">
+                <h3>Join the AI Language Community!</h3>
+                <p>Get the latest insights, tutorials, and fun updates straight to your inbox.</p>
+                <form class="newsletter-form" id="newsletter-form">
+                    <input type="email" id="email-input" placeholder="Your Email Address" aria-label="Enter your email address">
+                    <button type="submit">Join the Fun!</button>
+                    <div id="newsletter-message" class="newsletter-message" aria-live="polite"></div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 AI Language. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+            <div class="social-icons">
+                <a href="#" aria-label="Visit us on X (Twitter)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26L21.61 21.75H18.935L12.074 13.15L5.133 21.75H1.822l7.843-9.283L1.5 2.25H4.11L9.703 9.06L18.244 2.25Z"/>
+                    </svg>
+                </a>
+                <a href="#" aria-label="Visit us on LinkedIn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.284V9.593h3.419v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.614 0 4.288 2.37 4.288 5.424v6.232zM5.943 8.336a2.224 2.224 0 0 1-2.226-2.226c0-1.243.993-2.226 2.226-2.226s2.225.983 2.225 2.226c0 1.243-.992 2.226-2.225 2.226zM4.088 20.452H7.8v-10.874H4.088v10.874z"/>
+                    </svg>
+                </a>
+                <a href="#" aria-label="Visit us on YouTube">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.235 0C-.42 3.6 0 6.185 0 12c0 5.814-.42 8.4 4.38 8.816 3.604.246 11.631.245 15.235 0 4.799-.416 4.38-3.001 4.38-8.816 0-5.815.42-8.4-4.38-8.816zM9.545 15.597V8.403L15.407 12l-5.862 3.597z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Smooth Scrolling
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                    // Close mobile nav if open
+                    if (mobileNavOverlay.classList.contains('open')) {
+                        mobileNavOverlay.classList.remove('open');
+                        document.body.style.overflow = ''; // Restore scroll
+                    }
+                });
+            });
+
+            // Mobile Navigation Toggle
+            const hamburger = document.querySelector('.hamburger');
+            const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
+            const closeBtn = document.querySelector('.mobile-nav-overlay .close-btn');
+            const mobileNavLinks = document.querySelectorAll('.mobile-nav-overlay a');
+
+            hamburger.addEventListener('click', () => {
+                mobileNavOverlay.classList.add('open');
+                document.body.style.overflow = 'hidden'; // Prevent scrolling body when overlay is open
+            });
+
+            closeBtn.addEventListener('click', () => {
+                mobileNavOverlay.classList.remove('open');
+                document.body.style.overflow = ''; // Restore scroll
+            });
+
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileNavOverlay.classList.remove('open');
+                    document.body.style.overflow = ''; // Restore scroll
+                });
+            });
+
+            // Newsletter Form Validation
+            const newsletterForm = document.getElementById('newsletter-form');
+            const emailInput = document.getElementById('email-input');
+            const newsletterMessage = document.getElementById('newsletter-message');
+
+            const isValidEmail = (email) => {
+                // Basic email regex for demonstration
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(String(email).toLowerCase());
+            };
+
+            newsletterForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = emailInput.value.trim();
+                newsletterMessage.textContent = ''; // Clear previous messages
+                newsletterMessage.classList.remove('success', 'error');
+
+                if (isValidEmail(email)) {
+                    // Simulate API call
+                    setTimeout(() => {
+                        newsletterMessage.textContent = 'Thanks for joining! Check your inbox for updates.';
+                        newsletterMessage.classList.add('success');
+                        emailInput.value = ''; // Clear input
+                    }, 1000);
+                } else {
+                    newsletterMessage.textContent = 'Please enter a valid email address.';
+                    newsletterMessage.classList.add('error');
+                }
+            });
+
+            emailInput.addEventListener('input', () => {
+                // Clear validation messages on input
+                newsletterMessage.textContent = '';
+                newsletterMessage.classList.remove('success', 'error');
+                emailInput.style.borderColor = var(--text-secondary); // Reset border color
+            });
+
+            emailInput.addEventListener('blur', () => {
+                if (emailInput.value.trim() !== '') {
+                    if (isValidEmail(emailInput.value.trim())) {
+                        emailInput.style.borderColor = var(--color-success);
+                    } else {
+                        emailInput.style.borderColor = var(--color-error);
+                    }
+                } else {
+                    emailInput.style.borderColor = var(--text-secondary); // Reset if empty
+                }
+            });
+        });
+    </script>
+</body>
+</html>
